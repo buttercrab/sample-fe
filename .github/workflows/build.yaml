@@ -11,10 +11,13 @@ jobs:
         include:
           - build: linux
             os: ubuntu-latest
+            name: linux
           - build: macos
             os: macos-latest
+            name: macos
           - build: windows
             os: windows-latest
+            name: windows
     steps:
       - uses: actions/checkout@v4
         with:
@@ -34,17 +37,16 @@ jobs:
       - name: Install pnpm
         if: steps.check.outcome == 'success'
         run: npm install -g pnpm
-        working-directory: ./build/${{ matrix.build }}/app
+        working-directory: ./build/${{ matrix.name }}/app
 
       - name: Install dependencies
         if: steps.check.outcome == 'success'
         run: pnpm install
-        working-directory: ./build/${{ matrix.build }}/app
+        working-directory: ./build/${{ matrix.name }}/app
 
       - name: move node_modules
         if: steps.check.outcome == 'success'
-        run: mv ./node_modules ../
-        working-directory: ./build/${{ matrix.build }}/app
+        run: mv ./build/${{ matrix.name }}/app/node_modules ./build/${{ matrix.name }}/node_modules
 
       - name: Commit
         if: steps.check.outcome == 'success'
