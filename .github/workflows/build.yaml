@@ -1,0 +1,37 @@
+name: Push commit
+
+on: push
+
+jobs:
+  report:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        build: [ linux, macos, windows ]
+        include:
+          - build: linux
+            os: ubuntu-latest
+          - build: macos
+            os: macos-latest
+          - build: windows
+            os: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '22'
+      - name: Install pnpm
+        run: npm install -g pnpm
+        working-directory: ./build/${{ matrix.build }}/app
+      - name: Install dependencies
+        run: pnpm install
+        working-directory: ./build/${{ matrix.build }}/app
+      - name: move node_modules
+        run: mv ./node_modules ../
+        working-directory: ./build/${{ matrix.build }}/app
+      - name: Commit report
+        run: |
+          git config --global user.name 'Jaeyong Sung'
+          git config --global user.email 'buttercrab@users.noreply.github.com'
+          git commit -am "Automated Build"
+          git push
