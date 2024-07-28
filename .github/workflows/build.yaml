@@ -44,6 +44,7 @@ jobs:
           cp -r ./app ./build/${{ matrix.name }}
           cd ./build/${{ matrix.name }}/app
           pnpm install
+          rm .gitignore
 
       - name: Commit
         if: steps.check.outcome == 'success'
