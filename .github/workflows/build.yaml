@@ -12,12 +12,41 @@ jobs:
           - build: linux
             os: ubuntu-latest
             name: linux
+            check: |
+              if git log -1 --pretty=%B | grep -q "\[auto\]"; then
+                echo "auto commit"
+                exit 1
+              else
+                echo "manual commit"
+                exit 0
+              fi
+            script: ./action-linux.sh
+
           - build: macos
             os: macos-latest
             name: macos
+            check: |
+              if git log -1 --pretty=%B | grep -q "\[auto\]"; then
+                echo "auto commit"
+                exit 1
+              else
+                echo "manual commit"
+                exit 0
+              fi
+            script: ./action-macos.sh
+
           - build: windows
             os: windows-latest
             name: windows
+            check: |
+              if (git log -1 --pretty=%B | Select-String -Pattern "\[auto\]") {
+                echo "auto commit"
+                exit 1
+              } else {
+                echo "manual commit"
+                exit 0
+              }
+            script: ./action-windows.ps1
     steps:
       - uses: actions/checkout@v4
         with:
@@ -26,42 +55,13 @@ jobs:
       - name: check if commit is auto
         id: check
         continue-on-error: true
-        run: |
-          if git log -1 --pretty=%B | grep -q "\[auto\]"; then
-            echo "auto commit"
-            exit 1
-          else
-            echo "manual commit"
-            exit 0
-          fi
+        run: ${{ matrix.check }}
 
       - uses: actions/setup-node@v4
         if: steps.check.outcome == 'success'
         with:
           node-version: '22'
 
-      - name: Install pnpm
+      - name: Run script
         if: steps.check.outcome == 'success'
-        run: npm install -g pnpm
-
-      - name: Install dependencies
-        if: steps.check.outcome == 'success'
-        run: |
-          cp -r ./app ./build/${{ matrix.name }}
-          cd ./build/${{ matrix.name }}/app
-          pnpm install
-          rm .gitignore
-
-      - name: Commit
-        if: steps.check.outcome == 'success'
-        run: |
-          git config --global user.name 'Jaeyong Sung'
-          git config --global user.email 'buttercrab@users.noreply.github.com'
-          git add .
-          git commit -m "[auto] build node_modules" . > /dev/null 2> /dev/null
-          while true; do
-            git pull
-            git push
-            [ $? -eq 0 ] && break
-            sleep 1
-          done
+        run: ${{ matrix.script }}
