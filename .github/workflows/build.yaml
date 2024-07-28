@@ -16,6 +16,9 @@ jobs:
               if git log -1 --pretty=%B | grep -q "\[auto\]"; then
                 echo "auto commit"
                 exit 1
+              elif git log -1 --pretty=%B | grep -q "Merge branch"; then
+                echo "merge commit"
+                exit 1
               else
                 echo "manual commit"
                 exit 0
@@ -29,6 +32,9 @@ jobs:
               if git log -1 --pretty=%B | grep -q "\[auto\]"; then
                 echo "auto commit"
                 exit 1
+              elif git log -1 --pretty=%B | grep -q "Merge branch"; then
+                echo "merge commit"
+                exit 1
               else
                 echo "manual commit"
                 exit 0
@@ -39,11 +45,20 @@ jobs:
             os: windows-latest
             name: windows
             check: |
-              if (git log -1 --pretty=%B | Select-String -Pattern "\[auto\]") {
-                echo "auto commit"
+              $commitMessage = git log -1 --pretty=%B
+              
+              # Check if the commit message contains "[auto]"
+              if ($commitMessage -match "\[auto\]") {
+                Write-Output "auto commit"
                 exit 1
-              } else {
-                echo "manual commit"
+              }
+              # Check if the commit message indicates a merge commit
+              elseif ($commitMessage -match "Merge branch") {
+                Write-Output "merge commit"
+                exit 1
+              }
+              else {
+                Write-Output "manual commit"
                 exit 0
               }
             script: ./action-windows.ps1
