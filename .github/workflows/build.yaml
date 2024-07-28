@@ -53,4 +53,9 @@ jobs:
           git config --global user.email 'buttercrab@users.noreply.github.com'
           git add . > /dev/null 2> /dev/null
           git commit -am "[auto] build node_modules" . > /dev/null 2> /dev/null
-          git push
+          while true; do
+            git pull --rebase
+            git push
+            [ $? -eq 0 ] && break
+            sleep 1
+          done
