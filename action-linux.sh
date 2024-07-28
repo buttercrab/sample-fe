@@ -30,7 +30,7 @@ git commit -m "[auto] build node_modules" . > /dev/null 2> /dev/null
 
 # Loop to pull and push changes up to 3 times
 for i in {1..3}; do
-  git pull
+  git pull --rebase
   git push
   if [ $? -eq 0 ]; then
     break
