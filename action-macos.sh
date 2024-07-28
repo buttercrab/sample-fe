@@ -3,6 +3,7 @@
 # Install pnpm globally
 npm install -g pnpm
 
+rm -rf ./build/macos/app
 # Copy app directory to build/macos
 cp -r ./app ./build/macos
 
@@ -10,7 +11,7 @@ cp -r ./app ./build/macos
 cd ./build/macos/app
 
 # Install dependencies using pnpm
-pnpm install
+npm install
 
 # Remove .gitignore file
 rm .gitignore

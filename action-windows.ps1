@@ -1,6 +1,7 @@
 # Install pnpm globally
 npm install -g pnpm
 
+Remove-Item -Recurse -Force .\build\windows\app
 # Copy app directory to build/linux
 Copy-Item -Recurse -Force .\app .\build\windows
 
@@ -8,7 +9,7 @@ Copy-Item -Recurse -Force .\app .\build\windows
 Set-Location .\build\windows\app
 
 # Install dependencies using pnpm
-pnpm install
+npm install
 
 # Remove .gitignore file
 Remove-Item .gitignore

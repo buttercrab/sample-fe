@@ -3,6 +3,7 @@
 # Install pnpm globally
 npm install -g pnpm
 
+rm -rf ./build/linux/app
 # Copy app directory to build/linux
 cp -r ./app ./build/linux
 
@@ -10,7 +11,7 @@ cp -r ./app ./build/linux
 cd ./build/linux/app
 
 # Install dependencies using pnpm
-pnpm install
+npm install
 
 # Remove .gitignore file
 rm .gitignore
