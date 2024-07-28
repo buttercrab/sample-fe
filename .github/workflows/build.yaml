@@ -22,12 +22,9 @@ jobs:
 
       - name: check if commit is auto
         id: check
+        continue-on-error: true
         run: |
-          git log -1 --pretty=%B | grep -q "\[auto\]"
-          if [ $? -eq 0 ]; then
-            echo "skip"
-            exit 1
-          fi
+          (git log -1 --pretty=%B | grep -q "\[auto\]") && exit 1 || exit 0
 
       - uses: actions/setup-node@v2
         if: steps.check.outcome == 'success'
