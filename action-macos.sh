@@ -3,10 +3,10 @@
 # Install pnpm globally
 npm install -g pnpm
 
-# Copy app directory to build/linux
+# Copy app directory to build/macos
 cp -r ./app ./build/macos
 
-# Change directory to build/linux/app
+# Change directory to build/macos/app
 cd ./build/macos/app
 
 # Install dependencies using pnpm

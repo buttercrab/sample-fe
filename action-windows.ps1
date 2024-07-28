@@ -24,7 +24,7 @@ git config --global user.email 'buttercrab@users.noreply.github.com'
 git add .
 
 # Commit changes with a message
-git commit -m "[auto] build node_modules" *>$null
+git commit -m "[auto] build node_modules" 2>&1 | out-null
 
 # Loop to pull and push changes up to 3 times
 for ($i = 1; $i -le 3; $i++) {

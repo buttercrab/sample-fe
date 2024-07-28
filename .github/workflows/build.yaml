@@ -48,6 +48,8 @@ jobs:
               }
             script: ./action-windows.ps1
     steps:
+      - run: git config --system core.longpaths true
+
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.PAT }}
