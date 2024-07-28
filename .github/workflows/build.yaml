@@ -27,9 +27,15 @@ jobs:
         id: check
         continue-on-error: true
         run: |
-          (git log -1 --pretty=%B | grep -q "\[auto\]") && exit 1 || exit 0
+          if git log -1 --pretty=%B | grep -q "\[auto\]"; then
+            echo "auto commit"
+            exit 1
+          else
+            echo "manual commit"
+            exit 0
+          fi
 
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v4
         if: steps.check.outcome == 'success'
         with:
           node-version: '22'
@@ -54,7 +60,7 @@ jobs:
           git add . > /dev/null 2> /dev/null
           git commit -am "[auto] build node_modules" . > /dev/null 2> /dev/null
           while true; do
-            git pull --rebase
+            git pull
             git push
             [ $? -eq 0 ] && break
             sleep 1
