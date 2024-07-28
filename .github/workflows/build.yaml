@@ -19,22 +19,41 @@ jobs:
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.PAT }}
+
+      - name: check if commit is auto
+        id: check
+        run: |
+          git log -1 --pretty=%B | grep -q "\[auto\]"
+          if [ $? -eq 0 ]; then
+            echo "skip"
+            exit 1
+          fi
+
       - uses: actions/setup-node@v2
+        if: steps.check.outcome == 'success'
         with:
           node-version: '22'
+
       - name: Install pnpm
+        if: steps.check.outcome == 'success'
         run: npm install -g pnpm
         working-directory: ./build/${{ matrix.build }}/app
+
       - name: Install dependencies
+        if: steps.check.outcome == 'success'
         run: pnpm install
         working-directory: ./build/${{ matrix.build }}/app
+
       - name: move node_modules
+        if: steps.check.outcome == 'success'
         run: mv ./node_modules ../
         working-directory: ./build/${{ matrix.build }}/app
-      - name: Commit report
+
+      - name: Commit
+        if: steps.check.outcome == 'success'
         run: |
           git config --global user.name 'Jaeyong Sung'
           git config --global user.email 'buttercrab@users.noreply.github.com'
           git add . > /dev/null 2> /dev/null
-          git commit -am "Automated Build"
+          git commit -am "[auto] build node_modules"
           git push
