@@ -21,7 +21,11 @@
     "vite-plugin-solid": "^2.8.2"
   },
   "dependencies": {
+    "@ark-ui/solid": "^3.11.0",
     "@chainlift/liftkit-css": "^1.1.1",
+    "@corvu/drawer": "^0.2.2",
+    "@corvu/otp-field": "^0.1.2",
+    "@corvu/resizable": "^0.2.3",
     "@emotion/css": "^11.13.0",
     "@emotion/styled": "^11.13.0",
     "@floating-ui/core": "^1.6.7",
@@ -33,11 +37,18 @@
     "@solidjs/start": "^1.0.6",
     "@types/lodash": "^4.17.7",
     "babel-preset-solid": "^1.8.22",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "cmdk-solid": "^1.1.0",
+    "embla-carousel-solid": "^8.2.1",
     "lodash": "^4.17.21",
     "solid-dismiss": "^1.8.2",
     "solid-icons": "^1.1.0",
     "solid-js": "^1.8.11",
+    "solid-sonner": "^0.2.8",
     "solid-styled-components": "^0.28.5",
+    "tailwind-merge": "^2.5.2",
+    "tailwindcss-animate": "^1.0.7",
     "ts-deepmerge": "^7.0.1",
     "vinxi": "^0.4.2"
   }
