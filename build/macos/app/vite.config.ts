@@ -1,34 +1,20 @@
-import { defineConfig } from "vite";
-import { resolve } from "path";
-import react from "@vitejs/plugin-react";
-import { TanStackRouterVite } from '@tanstack/router-plugin/vite'
+import { defineConfig } from 'vite';
+import solidPlugin from 'vite-plugin-solid';
+// import devtools from 'solid-devtools/vite';
 
-export default defineConfig((configEnv) => {
-  const isDevelopment = configEnv.mode === "development";
-
-  return {
-    plugins: [react(), TanStackRouterVite()],
-    server: {
-      port: 3000,
-    },
-    test: {
-      globals: true,
-      environment: "happy-dom",
-      setupFiles: "./src/infrastructure/tests.setup.ts",
-    },
-    resolve: {
-      alias: {
-        app: resolve(__dirname, "src", "app"),
-        components: resolve(__dirname, "src", "components"),
-        hooks: resolve(__dirname, "src", "hooks"),
-      },
-    },
-    css: {
-      modules: {
-        generateScopedName: isDevelopment
-          ? "[name]__[local]__[hash:base64:5]"
-          : "[hash:base64:5]",
-      },
-    },
-  };
+export default defineConfig({
+  plugins: [
+    /* 
+    Uncomment the following line to enable solid-devtools.
+    For more info see https://github.com/thetarnav/solid-devtools/tree/main/packages/extension#readme
+    */
+    // devtools(),
+    solidPlugin(),
+  ],
+  server: {
+    port: 3000,
+  },
+  build: {
+    target: 'esnext',
+  },
 });
